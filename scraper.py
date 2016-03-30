@@ -17,6 +17,7 @@ if __name__ == '__main__':
 
     browser.find_by_id('lnkClearAll').first.click()
     time.sleep(2)
+    print browser.url
     html = browser.html
     soup = BeautifulSoup(html, "lxml")
     print soup.prettify()
