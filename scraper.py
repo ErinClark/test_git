@@ -14,6 +14,8 @@ ungm_int :  sew together first name + last name, country calling codes + phone/f
 bund_de  -  download csv - delete data to replace with eng cols
 eservices_wor : separate return address into lines - contents
 bad summary - due_north
+documents on td_e_nabavki_mk *+*+*+*+*
+philgeps: tender_url and description in codey lang - is this due do tender_url being uniquekey - therefore keeping old data + duplicating!
 
 '''
 
@@ -102,7 +104,9 @@ if __name__ == '__main__':
             except:
                 print 'Error getting tender from {0}'.format(link)
                 continue
-            print link
+            #print link
+            summary = get_attr_text(tender_soup, "dd", "class", "synopsis")
+            print summary, '\n'
             register_and_apply_link = reg_and_apply_link(link, tender_soup)
 
 
@@ -139,6 +143,7 @@ splinter>=0.7.3
 import sys
 from datetime import datetime
 from splinter import Browser
+from splinter.exceptions import ElementDoesNotExist
 import time
 import urllib
 from bs4 import BeautifulSoup
@@ -182,15 +187,40 @@ def get_detail(soup, tag, text, tag2):
 
 
 
+def get_table_info(soup, tag, text, tag2):
+    info = []
+    try:
+        info_table = soup.\
+            find(tag, text=text)\
+            .findNext(tag2)\
+            .findAll('tr')[1:]
+        for i in info_table:
+            i = i.findAll('td')
+            info.append({'order':i[0].text,
+                         'item_number':i[1].text})
+    except:
+        pass
+    return info
+
+
+
+
 if __name__ == '__main__':
 
     todays_date = str(datetime.now())
     country_code = ''
+    apply_requires_login = ''
     errors = []
     portal = ''
     # 'APPLY HERE LINKS'
 
 
+
+              #  data = {"tender_url": unicode(tender_url),
+              #          "country_code": unicode(country_code),
+              #          "apply_method": unicode(apply_method),
+              #          "todays_date": todays_date}
+              #  scraperwiki.sqlite.save(unique_keys=['tender_url'], data=data)
 
     print "number of errors: ", len(errors)
     print errors
@@ -227,6 +257,13 @@ def browse(url):
 
 
 '''
+
+
+'''
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    driver_path = os.path.join(current_directory, 'chromedriver')
+    #print driver_path
+    #browser = Browser(driver_name='chrome', executable_path=driver_path)'''
 
 
 
