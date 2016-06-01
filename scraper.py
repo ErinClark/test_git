@@ -35,6 +35,7 @@ splinter>=0.7.3
 
 
 *+*+*+*+*+* TOP *+*+*+*+*+*+
+'''
 
 # -*- coding: utf-8 -*-
 import sys
@@ -46,6 +47,9 @@ import time
 import urllib
 from bs4 import BeautifulSoup
 import scraperwiki
+
+reload(sys) # Reload does the trick!
+sys.setdefaultencoding('UTF8')
 
 
 def get_soup(url):
@@ -115,9 +119,10 @@ if __name__ == '__main__':
 #    enddate_timezone =
     errors = []
     portal = ''
-    # 'APPLY HERE LINKS'
 
 
+
+''' try:
 
               #  data = {"tender_url": unicode(tender_url),
               #          "country_code": unicode(country_code),
@@ -130,6 +135,8 @@ if __name__ == '__main__':
               #          "apply_method": unicode(apply_method),
               #          "todays_date": todays_date}
               #  scraperwiki.sqlite.save(unique_keys=['tender_url'], data=data)
+            except Exception as e:
+                errors.append([link, e])
 
     print "number of errors: ", len(errors)
     print errors
